@@ -1,6 +1,6 @@
-# [Wayfire]
+# [Blue Enviroment]
 
-[Wayfire]: https://wayfire.org
+[Blue Enviroment]:
 
 ![Version](https://img.shields.io/github/v/release/WayfireWM/wayfire)
 [![Matrix: #wayfire:matrix.org](https://img.shields.io/badge/matrix-%23wayfire%3Amatrix.org-blue)](https://matrix.to/#/#wayfire:matrix.org)
@@ -16,7 +16,7 @@
 [Manual]: https://github.com/WayfireWM/wayfire/wiki/General
 [Configuration]: https://github.com/WayfireWM/wayfire/wiki/Configuration
 
-Wayfire is a 3D [Wayland] compositor, inspired by [Compiz] and based on [wlroots].
+Blue Enviroment Based on wayfire
 
 It aims to create a customizable, extendable and lightweight environment without sacrificing its appearance.
 
@@ -106,70 +106,29 @@ This is the default if they are not present on your system.
 
 Installing [wf-shell](https://github.com/WayfireWM/wf-shell) is recommended for a complete experience.
 
-###### Arch Linux
+[blue-enviroment-git]: https://github.com/VoidArc-Studio/Blue-Enviroment.git
 
-[wayfire](https://aur.archlinux.org/packages/wayfire/) and [wayfire-git] are available in the [AUR].
 
-``` sh
-yay -S wayfire
-```
+##### Install Blue Enviroment
 
-[AUR]: https://aur.archlinux.org
-[wayfire-git]: https://aur.archlinux.org/packages/wayfire-git/
-
-###### Exherbo
+Cloning Repo
 
 ``` sh
-cave resolve -x wayfire
+git clone https://github.com/VoidArc-Studio/Blue-Enviroment.git
 ```
 
-###### Fedora
+Go to file
 
 ``` sh
-dnf install wayfire
+cd Blue-Enviroment
 ```
 
-###### FreeBSD
-Install the latest release and recommended addons with
-``` sh
-pkg install wayfire wayfire-plugins-extra wf-shell wcm
-```
-
-###### Gentoo
-Install the latest release with
-```sh
-emerge --ask --verbose wayfire
-```
-and to use the live version
-```sh
-emerge --ask --verbose "=gui-wm/wayfire-9999"
-```
-
-###### NixOS
-
-Enable Wayfire in your NixOS configuration:
-```nix
-programs.wayfire = {
-  enable = true;
-  plugins = with pkgs.wayfirePlugins; [
-    wcm
-    wf-shell
-    wayfire-plugins-extra
-  ];
-};
-```
-
-###### Ubuntu
+Run Install.sh
 
 ```
-apt install wayfire
+./install.sh
 ```
 
-###### Void
-
-``` sh
-xbps-install -S wayfire
-```
 
 ## Configuration
 
