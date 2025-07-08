@@ -1,4 +1,4 @@
-# [Blue Enviroment]
+# Blue Enviroment
 
 [Blue Enviroment]:
 
