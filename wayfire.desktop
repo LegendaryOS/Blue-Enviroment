@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Wayfire
+Name=Blue-Enviroment
 Exec=wayfire
 TryExec=wayfire
 Icon=
 Type=Application
-DesktopNames=Wayfire;wlroots
+DesktopNames=Wayfire;wlroots;Blue-Enviroment
