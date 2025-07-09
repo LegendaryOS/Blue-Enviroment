@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueLauncher UI - KDE Plasma & Android 15 Style</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="launcher-overlay">
+        <div class="launcher-container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search apps..." autofocus>
+            </div>
+            <div class="category-tabs">
+                <button class="tab active" data-category="all">All Apps</button>
+                <button class="tab" data-category="recent">Recent</button>
+                <button class="tab" data-category="system">System</button>
+                <button class="tab" data-category="favorites">Favorites</button>
+            </div>
+            <div class="app-grid" id="app-grid"></div>
+        </div>
+    </div>
+    <script>
+        // Funkcja pobierania aplikacji z serwera
+        async function fetchApps() {
+            try {
+                const response = await fetch('/apps');
+                const apps = await response.json();
+                return apps;
+            } catch (error) {
+                console.error('Error fetching apps:', error);
+                return [];
+            }
+        }
+
+        // Funkcja zapisywania historii
+        async function updateHistory(appName, action) {
+            try {
+                await fetch(`/apps/${encodeURIComponent(appName)}/${action}`, { method: 'POST' });
+            } catch (error) {
+                console.error(`Error updating ${action} for ${appName}:`, error);
+            }
+        }
+
+        // Funkcja renderowania aplikacji
+        async function renderApps(category, query = '') {
+            const apps = await fetchApps();
+            const appGrid = document.getElementById('app-grid');
+            appGrid.innerHTML = ''; // Czyść siatkę
+
+            const filteredApps = apps.filter(app => {
+                const matchesCategory = category === 'all' ||
+                    (category === 'recent' && app.launch_count > 0) ||
+                    (category === 'system' && app.is_system) ||
+                    (category === 'favorites' && app.is_favorite);
+                const matchesQuery = app.name.toLowerCase().includes(query.toLowerCase());
+                return matchesCategory && matchesQuery;
+            });
+
+            filteredApps.sort((a, b) => b.launch_count - a.launch_count || a.name.localeCompare(b.name));
+
+            filteredApps.forEach(app => {
+                const appItem = document.createElement('div');
+                appItem.className = 'app-item' + (app.launch_count > 0 ? ' recent' : '') + (app.is_favorite ? ' favorite' : '');
+                appItem.dataset.name = app.name;
+                appItem.innerHTML = `
+                    <img src="${app.icon}" alt="${app.name} Icon" class="app-icon" onerror="this.src='/fallback-icon.png';">
+                    <span class="app-name">${app.name}${app.is_favorite ? ' ★' : ''}</span>
+                `;
+                appGrid.appendChild(appItem);
+
+                // Animacja kliknięcia i uruchomienie aplikacji
+                appItem.addEventListener('click', async () => {
+                    appItem.classList.add('ripple');
+                    setTimeout(() => appItem.classList.remove('ripple'), 400);
+                    await updateHistory(app.name, 'launch');
+                    // Symulacja uruchomienia (w rzeczywistym systemie można użyć API do uruchomienia)
+                    console.log(`Launching: ${app.exec}`);
+                    renderApps(category, document.querySelector('.search-bar').value);
+                });
+
+                // Animacja hover
+                appItem.addEventListener('mouseenter', () => appItem.classList.add('hover'));
+                appItem.addEventListener('mouseleave', () => appItem.classList.remove('hover'));
+
+                // Prawy przycisk do przełączania ulubionych
+                appItem.addEventListener('contextmenu', async (e) => {
+                    e.preventDefault();
+                    await updateHistory(app.name, 'toggle-favorite');
+                    renderApps(category, document.querySelector('.search-bar').value);
+                });
+            });
+        }
+
+        // Inicjalne renderowanie
+        renderApps('all');
+
+        // Filtrowanie przez wyszukiwanie
+        document.querySelector('.search-bar').addEventListener('input', (e) => {
+            const query = e.target.value;
+            const activeCategory = document.querySelector('.tab.active').dataset.category;
+            renderApps(activeCategory, query);
+        });
+
+        // Przełączanie kategorii
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderApps(tab.dataset.category, document.querySelector('.search-bar').value);
+            });
+        });
+
+        // Zamykanie po naciśnięciu Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.close(); // W rzeczywistym systemie z Wayfire można obsłużyć zamknięcie
+            }
+        });
+    </script>
+</body>
+</html>
