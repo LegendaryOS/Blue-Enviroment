@@ -1,1 +1,32 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" id="theme-stylesheet" href="themes/dark.css">
+</head>
+<body>
+    <div id="panel">
+        <div id="app-launcher" class="launcher">
+            <!-- Populated dynamically by script.js -->
+        </div>
+        <div id="status-bar" class="status-bar">
+            <span id="wifi" class="status-icon"></span>
+            <span id="bluetooth" class="status-icon"></span>
+            <span id="battery" class="status-icon"></span>
+            <span id="volume" class="status-icon"></span>
+            <span id="clock" class="status-icon"></span>
+            <button id="settings-btn" class="status-icon">
+                <img src="icons/settings.svg" alt="Settings">
+            </button>
+        </div>
+    </div>
+    <div id="settings-panel" class="settings-panel hidden">
+        <!-- Settings UI loaded dynamically -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
