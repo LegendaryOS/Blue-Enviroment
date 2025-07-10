@@ -69,6 +69,7 @@ plugins = [
   'single_plugins',
   'ipc-rules',
   'blue-launcher',
+  'blue-panel'
 ]
 
 devenv = environment()
